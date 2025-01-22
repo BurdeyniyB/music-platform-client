@@ -17,15 +17,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import AlbumIcon from '@mui/icons-material/Album';
 import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
-const menuItems =[
-  {text: 'main', href: '/'},
-  {text: 'Tracks', href: '/tracks'},
-  {text: 'Albums', href: '/albums'}
-]
+
+const menuItems = [
+  { text: 'Main', href: '/', icon: <InboxIcon /> },
+  { text: 'Tracks', href: '/tracks', icon: <MusicNoteIcon /> },
+  { text: 'Albums', href: '/albums', icon: <AlbumIcon /> },
+];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -37,8 +39,9 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginLeft: open ? 0 : `-${drawerWidth}px`,
+  backgroundColor: '#1e1e2f',
+  color: '#fff',
 }));
-
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -53,14 +56,13 @@ const AppBar = styled(MuiAppBar, {
   }),
   width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
   marginLeft: open ? `${drawerWidth}px` : 0,
+  backgroundColor: '#221f45',
 }));
-
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
 }));
@@ -88,17 +90,15 @@ export default function NavBar() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={[
-              {
-                mr: 2,
-              },
-              open && { display: 'none' },
-            ]}
+            sx={{
+              marginRight: 2,
+              ...(open && { display: 'none' }),
+            }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            Music Platform
           </Typography>
         </Toolbar>
       </AppBar>
@@ -109,6 +109,8 @@ export default function NavBar() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            backgroundColor: '#292946',
+            color: '#fff',
           },
         }}
         variant="persistent"
@@ -122,12 +124,10 @@ export default function NavBar() {
         </DrawerHeader>
         <Divider />
         <List>
-          {menuItems.map(({text, href}, index) => (
+          {menuItems.map(({ text, href, icon }, index) => (
             <ListItem key={href} disablePadding>
               <ListItemButton onClick={() => router.push(href)}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+                <ListItemIcon sx={{ color: 'inherit' }}>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>

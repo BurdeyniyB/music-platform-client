@@ -1,10 +1,13 @@
+import MainLayout from "@/layout/MainLayout";
 import React from "react";
 
 const Index = () => {
     return (
-        <div>
-            list of tracks
-        </div>
+        <MainLayout>
+            <div>
+                list of tracks
+            </div>
+        </MainLayout>
     )
 }
 

@@ -1,14 +1,15 @@
 import NavBar from "@/component/NavBar";
 import React from "react";
-
+import styles from "../style/styles.module.css";
+import MainLayout from "@/layout/MainLayout";
 const Index = () => {
-    return(
-        <div>
-            <NavBar />
-            <h1>Welcome to music platform!</h1>
-            <h3>Find your favorite music</h3>
-        </div>
-    )
-}
+    return (
+        <MainLayout>
+                <NavBar />
+                <h1 className={styles.heading}>Welcome to music platform!</h1>
+                <h3 className={styles.subHeading}>Find your favorite music</h3>
+        </MainLayout>
+    );
+};
 
 export default Index;
