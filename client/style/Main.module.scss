@@ -1,0 +1,40 @@
+.container {
+  margin-top: 15px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 15px;
+  font-family: "Arial", sans-serif;
+}
+
+.card {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #000000;
+}
+
+.subHeading {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  color: #b0bec5;
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ff4081;
+  color: #fff;
+}

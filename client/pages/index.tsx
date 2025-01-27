@@ -1,6 +1,6 @@
 import NavBar from "@/component/NavBar";
 import React from "react";
-import styles from "../style/styles.module.css";
+import styles from "../style/Main.module.scss";
 import MainLayout from "@/layout/MainLayout";
 const Index = () => {
     return (
