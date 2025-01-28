@@ -11,3 +11,5 @@ const MyApp: FC<AppProps> = ({Component, ...rest}) => {
     </Provider>
   );
 };
+
+export default MyApp;

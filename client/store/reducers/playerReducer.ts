@@ -1,12 +1,11 @@
 import { PlayerAction, PlayerActionTypes, PlayerState } from "@/types/player"
-import { Place } from "@mui/icons-material"
 
 const initialState: PlayerState = {
     currentTime: 0,
     duration: 0,
     active: null,
-    volume: 0,
-    pause: true,
+    volume: 50,
+    pause: false,
 }
 
 export const playerReducer = (state = initialState, action: PlayerAction): PlayerState => {

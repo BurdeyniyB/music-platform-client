@@ -1,38 +1,84 @@
 import { Pause, PlayArrow, VolumeUp } from "@mui/icons-material";
 import { Grid, IconButton } from "@mui/material";
 import style from "@/style/Player.module.scss"
-import React from "react";
+import React, { useEffect } from "react";
 import { ITrack } from "@/types/track";
 import TrackProgress from "./TrackProgress";
+import { useTypeSelector } from "@/hooks/useTypedSelector";
+import { useAction } from "@/hooks/useActions";
 
+let audio: HTMLAudioElement | undefined;
 const Player = () => {
-    const track: ITrack = {
-        _id: '1',
-        name: 'Track 1',
-        artist: 'artist 1',
-        text: 'text 1',
-        listens: 3,
-        audio: "http://localhost:5000/audio/c4e7b34f-8b34-4dbc-b917-9c0dfa3b6708.mp3",
-        picture: "http://localhost:5000/image/d422e27b-ae3b-45dc-a9d7-6c30839b6243.png",
-        comments: []
+    const { pause, volume, active, duration, currentTime } = useTypeSelector(state => state.player);
+    const { pauseTrack, playTrack, setVolume, setCurrentTime, setDuration } = useAction();
+
+    useEffect(() => {
+        if (!audio) {
+            audio = new Audio;
+        } else {
+            setAudio();
+            play();
+        }
+    }, [active])
+
+    const setAudio = () => {
+        if(active && audio){
+            audio.src = active.audio;
+            audio.volume = volume / 100;
+            audio.onloadedmetadata = () => {
+                if (audio)
+                    setDuration(Math.ceil(audio.duration))
+            }
+            audio.ontimeupdate = () => {
+                if (audio)
+                    setCurrentTime(Math.ceil(audio.currentTime))
+            }
+            console.log(pause);
+        }
     }
-    const active = false;
+
+    const play = () => {
+        if (pause) {
+            playTrack();
+            if (audio)
+                audio.pause();
+
+        } else {
+            pauseTrack();
+            if (audio)
+                audio.play();
+        }
+    }
+
+    const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = Number(e.target.value);
+        if (audio)
+            audio.volume = value / 100;
+        setVolume(value)
+    }
+
+    const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = Number(e.target.value);
+        if (audio)
+            audio.currentTime = value;
+        setCurrentTime(value)
+    }
+
     return (
         <div className={style.player}>
-            <IconButton>
-                {active
+            <IconButton onClick={play}>
+                {!pause
                     ? <PlayArrow />
                     : <Pause />
                 }
             </IconButton>
             <Grid container direction="column" style={{ width: 200, margin: '0 20px' }}>
-                <div>{track.name}</div>
-                <div style={{ fontSize: 12 }}>{track.artist}</div>
-                {active && <div>02:42 / 03:22</div>}
+                <div>{active?.name}</div>
+                <div style={{ fontSize: 12 }}>{active?.artist}</div>
             </Grid>
-            <TrackProgress left={0} right={100} onchange={() => ({})} />
-            <VolumeUp style={{marginLeft: 'auto'}} />
-            <TrackProgress left={0} right={100} onchange={() => ({})} />
+            <TrackProgress left={currentTime} right={duration} onchange={changeCurrentTime} isTime={true}/>
+            <VolumeUp style={{ marginLeft: 'auto' }} />
+            <TrackProgress left={volume} right={100} onchange={changeVolume} isTime={false}/>
         </div>
     );
 };

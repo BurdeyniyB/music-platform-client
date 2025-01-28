@@ -5,6 +5,8 @@ import styles from "../../style/Main.module.scss";
 import { useRouter } from "next/router";
 import { ITrack } from "@/types/track";
 import TrackList from "@/component/TrackList";
+import { useTypeSelector } from "@/hooks/useTypedSelector";
+import { useAction } from "@/hooks/useActions";
 
 const Index = () => {
     const router = useRouter();
