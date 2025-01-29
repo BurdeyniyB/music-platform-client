@@ -23,7 +23,7 @@ const Player = () => {
 
     const setAudio = () => {
         if(active && audio){
-            audio.src = active.audio;
+            audio.src = 'http://localhost:5000/' + active.audio;
             audio.volume = volume / 100;
             audio.onloadedmetadata = () => {
                 if (audio)

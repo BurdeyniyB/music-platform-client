@@ -1,17 +1,44 @@
 import FileUpload from "@/component/FileUpload";
 import StepWrapper from "@/component/StepWrapper";
+import { useInput } from "@/hooks/useInput";
 import MainLayout from "@/layout/MainLayout";
 import { Button, Grid, TextField } from "@mui/material";
-import React, { act, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 const Create = () => {
     const [activeStep, setActiveStep] = useState(0);
-    const [picture, setPicture] = useState(null);
-    const [audio, setAudio] = useState(null);
+    const [picture, setPicture] = useState<File | null>(null);
+    const [audio, setAudio] = useState<File | null>(null);    
+    const name = useInput('')
+    const artist = useInput('')
+    const text = useInput('')
+    const router = useRouter()
 
-    const next = () => {
+    const next = async() => {
         if (activeStep !== 2) {
             setActiveStep(prev => prev + 1)
+        } else {
+            console.log("send data")
+            const formData = new FormData();
+            formData.append('name', name.value);
+            formData.append('text', text.value);
+            formData.append('artist', artist.value);
+
+            if (picture && audio) {
+                formData.append('picture', picture);
+                formData.append('audio', audio);
+            }
+            else{
+                return
+            }
+
+            await axios.post('http://localhost:5000/tracks', formData, {
+                withCredentials: true
+            })
+            .catch(e => console.log(e));
+            router.push('/tracks')
         }
     }
     const back = () => {
@@ -24,12 +51,15 @@ const Create = () => {
                 {activeStep === 0 &&
                     <Grid container direction={"column"}>
                         <TextField
+                            {...name}
                             label={'name of track'}
                         />
                         <TextField
+                            {...artist}
                             label={'name of artist'}
                         />
                         <TextField
+                            {...text}
                             label={'words for track'}
                             multiline
                             rows={3}
