@@ -1,27 +1,37 @@
 import { combineReducers } from "redux";
-import { playerReducer } from "./playerReducer";
 import { HYDRATE } from "next-redux-wrapper";
-import { PlayerAction, PlayerActionTypes } from "@/types/player";
+import { trackReducer } from "./trackReducer";
+import { playerReducer } from "./playerReducer";
+import { TrackAction, TrackActionTypes } from "@/types/track";
+import { PlayerAction } from "@/types/player";
 
-export const rootReducer = combineReducers({
+// Комбінуємо ред'юсери
+const combinedReducer = combineReducers({
     player: playerReducer,
+    track: trackReducer
 });
 
 const reducer = (
     state: RootState | undefined,
-    action: PlayerAction | { type: typeof HYDRATE; payload: RootState }
+    action: PlayerAction | TrackAction | { type: typeof HYDRATE; payload: RootState }
 ): RootState => {
     if (action.type === HYDRATE) {
-        const nextState: RootState = {
+        return {
             ...state, 
             ...action.payload, 
+            track: {
+                ...state?.track, // Гарантуємо, що старий track не перезаписується пустими значеннями
+                ...action.payload.track
+            },
+            player: {
+                ...state?.player,
+                ...action.payload.player
+            }
         };
-        if (state?.player) nextState.player = state.player;
-        return nextState;
-    } else {
-        return rootReducer(state, action as PlayerAction);
     }
+    
+    return combinedReducer(state, action);
 };
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof combinedReducer>;
 export default reducer;
