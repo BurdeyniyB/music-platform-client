@@ -2,7 +2,7 @@ import { TrackAction, TrackActionTypes, TrackState } from "@/types/track"
 
 const initialState: TrackState = {
     tracks: [],
-    error: ''
+    error: '',
 }
 
 export const trackReducer = (state = initialState, action: TrackAction): TrackState => {

@@ -45,13 +45,10 @@ const Index = () => {
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={8} lg={6}>
                     <Card className={styles.card} style={{ borderBlock: "#1e1e2f" }}>
-                        <Grid container justifyContent="space-between" alignItems="center">
+                        <Grid container justifyContent="center">
                             <Typography variant="h4" className={styles.heading}>
                                 List of Tracks
                             </Typography>
-                            <Button onClick={() => router.push("/tracks/create")} variant="contained" color="primary">
-                                Upload
-                            </Button>
                         </Grid>
                     </Card>
                 </Grid>
